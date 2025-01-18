@@ -1,7 +1,7 @@
 const FPSettings = {
-  'username': 'amandakay10@me.com',
-  'password': 'Benjamin@0310',
-  'vin': '1FM5K7FW0MNA14120',
+  'username': 'you fordpass email here',
+  'password': 'your fordpass password here',
+  'vin': 'your vehicle vin here',
   'clientId': '9fb503e0-715b-47e8-adfd-ad4b7770f73b',
   'applicationId': '71A3AD0A-CF46-4CCF-B473-FC7FE5BC4592',
   'userAgent': 'FordPass/2 CFNetwork/1475 Darwin/23.0.0'
