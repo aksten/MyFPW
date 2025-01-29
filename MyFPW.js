@@ -1,12 +1,28 @@
 
+//ENTER YOUR FORDPASS EMAIL, PASSWORD AND THE VIN NUMBER TO THE CAR BELOW.
+//IF YOU HAVE AN IMAGE OF YOUR CAR YOU'D LIKE TO USE, MAKE A FOLDER IN ICLOUD UNDER SCRIPTABLE CALLED MyFPW, a subfolder named VehicleImages and name the photo vehicle_1.png, otherwise just comment out the lines for the photo 
 const FPSettings = {
-  'username': 'ENTER YOUR FORDPASS EMAIL HERE',
+  'username': 'YOUR FORDPASS EMAIL HERE',
   'password': 'YOUR FORDPASS PASSWORD HERE',
-  'vin': 'ENTER YOUR VIN NUMBER HERE',
+  'vin': 'VIN HERE',
   'clientId': '9fb503e0-715b-47e8-adfd-ad4b7770f73b',
   'applicationId': '71A3AD0A-CF46-4CCF-B473-FC7FE5BC4592',
   'userAgent': 'FordPass/2 CFNetwork/1475 Darwin/23.0.0'
 };
+
+//ENTER THE NAME OF THE SHORTCUTS FOR EACH COMMAND, IF IT HAS SPACES, ENTER IT WITH THE SPACES EXACTLY, FOR EXAMPLE, 'Lock My Car'. IF YOU GET 'SHORTCUT CANNOT BE FOUND ERRORS, MAKE SURE YOUR SHORTCUT DOESN'T HAVE ANY LEADING OR TRAILING SPACES IN THE ACTUAL SHORTCUT NAME IN THE SHORTCUTS APP
+const ShortcutLockName = 'NAME OF YOUR LOCK CAR SHORCUT, SPACES ARE OK';
+const ShortcutUnlockName = 'Unlock My Car';
+const ShortcutStartName = 'Start My Car';
+const ShortcutStopName = 'Stop My Car';
+
+
+
+const lockCommand = 'shortcuts://x-callback-url/run-shortcut?name=' + urlify(ShortcutLockName);
+const unlockCommand = 'shortcuts://x-callback-url/run-shortcut?name=' + urlify(ShortcutUnlockName);
+const startCommand = 'shortcuts://x-callback-url/run-shortcut?name=' + urlify(ShortcutStartName);
+const stopCommand = 'shortcuts://x-callback-url/run-shortcut?name=' + urlify(ShortcutStopName);
+
 const SPACING = 5;
 const textBlack = new Color('#000000');
 const textWhite = new Color('#EDEDED');
@@ -124,7 +140,7 @@ for (key in params) {
   //console.log(data.access_token);
 }
 
-async  getFordPassToken() {
+async function getFordPassToken() {
 		let req = new Request('https://shortcuts.henrylink.app/auth');
     req.method = 'POST';
     req.headers = {
@@ -407,10 +423,10 @@ s1c1r2t3.rightAlignText();
   let s5c3r2t = addTinyText(s5c3r2, 'Start');
 	let s5c4r1t = addLargeSymbol(s5c4r1, 'suv.side.and.exclamationmark');
   let s5c4r2t = addTinyText(s5c4r2, 'Stop');
-  s5c1r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Lock%20My%20Car';
-  s5c2r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Unlock%20My%20Car';
-  s5c3r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Start%20My%20Car';
-  s5c4r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Stop%20My%20Car';
+  s5c1r1.url = lockCommand;
+  s5c2r1.url = unlockCommand;
+  s5c3r1.url = startCommand;
+  s5c4r1.url = stopCommand;
   widget.addSpacer();
   console.log(config.runsInApp)
   console.log(config.runsInWidget)
@@ -561,3 +577,13 @@ function flexStack(wrapper, title, desc) {
   };
 }
 
+// Using Recursive Function
+function urlify(str) {
+    if (str.length === 0) {
+        return '';
+    }
+    if (str[0] === ' ') {
+        return '%20' + urlify(str.slice(1));
+    }
+    return str[0] + urlify(str.slice(1));
+}
