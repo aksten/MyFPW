@@ -1,63 +1,102 @@
+
 const FPSettings = {
-  'username': 'you fordpass email here',
-  'password': 'your fordpass password here',
-  'vin': 'your vehicle vin here',
+  'username': 'ENTER YOUR FORDPASS EMAIL HERE',
+  'password': 'YOUR FORDPASS PASSWORD HERE',
+  'vin': 'ENTER YOUR VIN NUMBER HERE',
   'clientId': '9fb503e0-715b-47e8-adfd-ad4b7770f73b',
   'applicationId': '71A3AD0A-CF46-4CCF-B473-FC7FE5BC4592',
   'userAgent': 'FordPass/2 CFNetwork/1475 Darwin/23.0.0'
 };
+const SPACING = 5;
 const textBlack = new Color('#000000');
 const textWhite = new Color('#EDEDED');
 
-const titleFont = Font.boldRoundedSystemFont(18);
-const descFont = Font.mediumRoundedSystemFont(18);
-  
+const titleFont = Font.boldRoundedSystemFont(14);
+const descFont = Font.mediumRoundedSystemFont(14);
+const hdrFont = Font.boldSystemFont(18);  
 const autoToken = await getAutonomicToken();
 const vData = await getVehicleData();
 
-let oilLife = vData.metrics.oilLifeRemaining.value + ' %';
-let fuelLevel = Math.round(vData.metrics.fuelLevel.value) + ' %';
-let odometer = Math.round(vData.metrics.odometer.value * 0.621371) + ' mi.';
-let doorLock = vData.metrics.doorLockStatus[0].value;
-let hood = vData.metrics.hoodStatus.value;
-let battery = vData.metrics.batteryVoltage.value.toFixed(1) + ' V';
-let locLat = vData.metrics.position.value.location.lat + ' LAT';
-let locLon = vData.metrics.position.value.location.lon + ' LON';
-let door1 = vData.metrics.doorStatus[0].vehicleDoor;
-let door1stat = vData.metrics.doorStatus[0].value;
-let door2 = vData.metrics.doorStatus[1].vehicleDoor;
-let door2stat = vData.metrics.doorStatus[1].value;
-let door3 = vData.metrics.doorStatus[2].vehicleDoor;
-let door3stat = vData.metrics.doorStatus[2].value;
-let door4 = vData.metrics.doorStatus[3].vehicleDoor;
-let door4stat = vData.metrics.doorStatus[3].value;
-let door5 = vData.metrics.doorStatus[4].vehicleDoor;
-let door5stat = vData.metrics.doorStatus[4].value;
-let door6 = vData.metrics.doorStatus[5].vehicleDoor;
-let door6stat = vData.metrics.doorStatus[5].value;
-let ignition = vData.metrics.ignitionStatus.value;
-let remote = Object.keys(vData.events.remoteStartEvent.conditions)[0];
-let remoteRunning = (remote != 'remoteStartEnded') ? 'On':'Off';
-let running = (ignition != 'OFF') ? 'On':'Off';
-let isRunning = (remoteRunning != 'Off' || running != 'Off') ? 'Running':'Not Running';
-let window1 = vData.metrics.windowStatus[0].vehicleWindow + ' ' + vData.metrics.windowStatus[0].vehicleSide;
-let window1name = window1.replace('UNSPECIFIED_', '')
-let window1stat = (vData.metrics.windowStatus[0].value.doubleRange.upperBound != 100 || vData.metrics.windowStatus[0].value.doubleRange.lowerBound != 100) ? 'Window Closed':'Window Open';
-let window2 = vData.metrics.windowStatus[1].vehicleWindow + ' ' + vData.metrics.windowStatus[1].vehicleSide;
-let window2name = window2.replace('UNSPECIFIED_', '')
-let window2stat = (vData.metrics.windowStatus[1].value.doubleRange.upperBound != 100 || vData.metrics.windowStatus[1].value.doubleRange.lowerBound != 100) ? 'Window Closed':'Window Open';
-let fuelRange = Math.round(vData.metrics.fuelRange.value * 0.621371) + ' mi.';
-let tire1_fl = vData.metrics.tirePressure[0].vehicleWheel;
-let tire1_flp = Math.round(vData.metrics.tirePressure[0].value * 0.14503773773020923).toString();
-let tire2_fr = vData.metrics.tirePressure[1].vehicleWheel;
-let tire2_frp = Math.round(vData.metrics.tirePressure[1].value * 0.14503773773020923).toString();
-let tire3_rl = vData.metrics.tirePressure[2].vehicleWheel;
-let tire3_rlp = Math.round(vData.metrics.tirePressure[2].value * 0.14503773773020923).toString();
-let tire4_rr = vData.metrics.tirePressure[3].vehicleWheel;
-let tire4_rrp = Math.round(vData.metrics.tirePressure[3].value * 0.14503773773020923).toString();
+const oilLife = vData.metrics.oilLifeRemaining.value + ' %';
+const fuelLevel = Math.round(vData.metrics.fuelLevel.value) + ' %';
+const odometer = Math.round(vData.metrics.odometer.value * 0.621371) + ' mi.';
+const doorLock = vData.metrics.doorLockStatus[0].value;
+const hood = vData.metrics.hoodStatus.value;
+const battery = vData.metrics.batteryVoltage.value.toFixed(1) + ' V';
+const locLat = vData.metrics.position.value.location.lat;
+const locLon = vData.metrics.position.value.location.lon;
+const door1 = vData.metrics.doorStatus[0].vehicleDoor;
+const door1stat = vData.metrics.doorStatus[0].value;
+const door2 = vData.metrics.doorStatus[1].vehicleDoor;
+const door2stat = vData.metrics.doorStatus[1].value;
+const door3 = vData.metrics.doorStatus[2].vehicleDoor;
+const door3stat = vData.metrics.doorStatus[2].value;
+const door4 = vData.metrics.doorStatus[3].vehicleDoor;
+const door4stat = vData.metrics.doorStatus[3].value;
+const door5 = vData.metrics.doorStatus[4].vehicleDoor;
+const door5stat = vData.metrics.doorStatus[4].value;
+const door6 = vData.metrics.doorStatus[5].vehicleDoor;
+const door6stat = vData.metrics.doorStatus[5].value;
+const ignition = vData.metrics.ignitionStatus.value;
+const remote = Object.keys(vData.events.remoteStartEvent.conditions)[0];
+const remoteRunning = (remote != 'remoteStartEnded') ? 'On':'Off';
+const running = (ignition != 'OFF') ? 'On':'Off';
+const isRunning = (remoteRunning != 'Off' || running != 'Off') ? 'ON!':'Off';
+const window1 = vData.metrics.windowStatus[0].vehicleWindow + ' ' + vData.metrics.windowStatus[0].vehicleSide;
+const window1name = window1.replace('UNSPECIFIED_', '')
+const window1stat = (vData.metrics.windowStatus[0].value.doubleRange.upperBound != 100 || vData.metrics.windowStatus[0].value.doubleRange.lowerBound != 100) ? 'Window Closed':'Window Open';
+const window2 = vData.metrics.windowStatus[1].vehicleWindow + ' ' + vData.metrics.windowStatus[1].vehicleSide;
+const window2name = window2.replace('UNSPECIFIED_', '')
+const window2stat = (vData.metrics.windowStatus[1].value.doubleRange.upperBound != 100 || vData.metrics.windowStatus[1].value.doubleRange.lowerBound != 100) ? 'Window Closed':'Window Open';
+const windowStat = (window1stat == 'Window Closed' && window2stat == 'Window Closed') ? 'All Closed':'OPEN!';
+const fuelRange = Math.round(vData.metrics.fuelRange.value * 0.621371) + ' miles to empty';
+const tire_fl = vData.metrics.tirePressure[0].vehicleWheel;
+const tire_flp = Math.round(vData.metrics.tirePressure[0].value * 0.14503773773020923).toString();
+const tire_fr = vData.metrics.tirePressure[1].vehicleWheel;
+const tire_frp = Math.round(vData.metrics.tirePressure[1].value * 0.14503773773020923).toString();
+const tire_rl = vData.metrics.tirePressure[2].vehicleWheel;
+const tire_rlp = Math.round(vData.metrics.tirePressure[2].value * 0.14503773773020923).toString();
+const tire_rr = vData.metrics.tirePressure[3].vehicleWheel;
+const tire_rrp = Math.round(vData.metrics.tirePressure[3].value * 0.14503773773020923).toString();
+const vAddress = await GetAddress();
+const addSymbol = (root, name) => {
+  const sfs = SFSymbol.named(name)
+  sfs.applyFont(
+    //Font.thinMonospacedSystemFont(18)
+		Font.boldRoundedSystemFont(14)
+  )
+  const image = root.addImage(sfs.image)
+  image.imageSize = new Size(20, 20)
+  image.tintColor = Color.white()
+};
+const addLargeSymbol = (root, name) => {
+  const sfs = SFSymbol.named(name)
+  sfs.applyFont(
+    //Font.thinMonospacedSystemFont(18)
+		Font.mediumRoundedSystemFont(36)
+  )
+  const image = root.addImage(sfs.image)
+  image.imageSize = new Size(50, 50)
+  image.tintColor = Color.white()
+}
 
-const widgetss = await CreateWidget();
-Script.setWidget(widgetss);
+const addDescText = (root, name) => {
+  const txt = root.addText(name)
+  txt.font = Font.mediumRoundedSystemFont(14)
+  txt.textColor = textWhite;
+}
+
+const addTitleText = (root, name) => {
+  const txt = root.addText(name)
+  txt.font = Font.boldRoundedSystemFont(14)
+  txt.textColor = textWhite;
+}
+
+const wid = await CreateWidget();
+
+Script.setWidget(wid);
+
+    
 Script.complete();
 
 async function getAutonomicToken() {
@@ -85,7 +124,7 @@ for (key in params) {
   //console.log(data.access_token);
 }
 
-async function getFordPassToken() {
+async  getFordPassToken() {
 		let req = new Request('https://shortcuts.henrylink.app/auth');
     req.method = 'POST';
     req.headers = {
@@ -98,13 +137,6 @@ async function getFordPassToken() {
     const data = await req.loadJSON();
     return data.access_token;
     //console.log(data.access_token);
-}
-
-async function ExecuteCommand(commandIs) {
-  if(!commandIs == 'status')
-  getVehicleCommand()
-  else
-  getVehicleData()
 }
 
 async function getVehicleStatus() {
@@ -158,7 +190,7 @@ async function getVehicleData(jsonPath) {
 }
 
 
-async function getVehicleCommand() {
+async function getVehicleCommand(commandIs) {
   let vin = FPSettings.vin;
   let url = 'https://api.autonomic.ai/v1beta/command/vehicles/' + vin + '/commands';
   let req = new Request(url);
@@ -177,95 +209,6 @@ async function getVehicleCommand() {
     return data;
 }
 
-function CreateWidget() {
-  let widget = new ListWidget();
-  let image = Image.fromFile(getVehicleImageFilePath());
-  let batteryIcon = Image.fromFile(getIconFilePath('Battery.png'));
-  //set gradient background
-let endColorDark = new Color("141414");
-let startColorDark = new Color("13235F");
-let endColorLight = new Color("DDDDDD");
-let startColorLight = new Color("BCBBBB")
-let gradient = new LinearGradient();
-gradient.colors = [startColorDark, endColorDark];
-gradient.locations = [0.0, 1];
-widget.backgroundGradient = gradient;
-  //widget.backgroundColor = Color.blue();
-  
-  let c1r1 = widget.addStack();
-  c1r1.layoutVertically();
-  c1r1.addImage(image);
-  
-  let c2 = widget.addStack();
-  c2.layoutVertically();
-  let c2r1 = c2.addStack();
-  c2r1.layoutHorizontally();
-  
-  let title1 = c2r1.addText('Fuel Level');
-  title1.font = titleFont;
-  title1.textColor = textWhite;
-  c2r1.addSpacer();
-  let c3r1 = c2r1.addStack();
-  c3r1.layoutVertically();
-  let desc1 = c3r1.addText(fuelLevel);
-  desc1.font = descFont;
-  desc1.textColor = Color.white();
-  
-  let c2r2 = c2.addStack();
-  c2r2.layoutHorizontally();
-  let title2 = c2r2.addText('Fuel Range');
-  title2.font = titleFont;
-  title2.textColor = textWhite;
-  c2r2.addSpacer();
-  let c3r2 = c2r2.addStack();
-  c3r2.layoutVertically();
-  let desc2 = c3r2.addText(fuelRange);
-  desc2.font = descFont;
-  desc2.textColor = textWhite;
-  
-  let c2r3 = c2.addStack();
-  c2r3.layoutHorizontally();
-  let title3 = c2r3.addText('Odometer');
-  title3.font = titleFont;
-  title3.textColor = textWhite;
-  c2r3.addSpacer();
-  let c3r3 = c2r3.addStack();
-  c3r3.layoutVertically();
-  let desc3 = c3r3.addText(odometer);
-  desc3.font = descFont;
-  desc3.textColor = textWhite;
-  
-  let c2r4 = c2.addStack();
-  c2r4.layoutHorizontally();
-  let title4 = c2r4.addText('Miles To Empty');
-  title4.font = titleFont;
-  title4.textColor = textWhite;
-  c2r4.addSpacer();
-  let c3r4 = c2r4.addStack();
-  c3r4.layoutVertically();
-  let desc4 = c3r4.addText(fuelRange);
-  desc4.font = descFont;
-  desc4.textColor = textWhite;
-  
-  let c2r5 = c2.addStack();
-  c2r5.layoutHorizontally();
-  let title5 = c2r5.addText('Doors Locked?')
-  title5.font = titleFont;
-  title5.textColor = textWhite;
-  c2r5.addSpacer();
-  let c3r5 = c2r5.addStack();
-  c3r5.layoutVertically();
-  let desc5 = (doorLock == "LOCKED") ? c3r5.addText('Yes'):c3r5.addtext('No');
-  desc5.font = descFont;
-  desc5.textColor = textWhite;
-  
-  
-  if (config.runsInApp)
-  	return widget.presentLarge()
-  else if (config.runsInWidget)
-  	return widget
-}
-
 function getVehicleImageFilePath() {
   let fm = FileManager.iCloud()
   let dir = fm.documentsDirectory()
@@ -279,5 +222,342 @@ function getIconFilePath(imageName) {
   let dir = fm.documentsDirectory()
   let p1 = fm.joinPath(dir, 'MyFPW')
   let p2 = fm.joinPath(p1, 'Icons')
-  return fm.joinPath(p2, imageName)
+  return fm.joinPath(p2, imageName + '.png')
 }
+
+async function GetAddress() {
+  let token = 'pk.d99c8395cd483355c647bf77f4d2b8af';
+  url = 'https://us1.locationiq.com/v1/reverse.php?key=';
+  url = url + token;
+  url = url + '&lat=' + locLat;
+  url = url + '&lon=' + locLon;
+  url = url + '&zoom=18';
+  url = url + '&format=json';
+  let req = new Request(url);
+  req.method = 'GET';
+  req.headers = {'accept': 'application/json'};
+  const resp =   await req.loadJSON();
+  const addr = resp.address;
+  //console.log('resp: ' + resp)
+  //console.log('addr: ' + addr)
+  if ('house_number' in addr)
+  	fAddr = addr.house_number + ' ' + addr.road + ', ' + addr.city
+  else
+  	fAddr = addr.road + ', ' + addr.city
+  return fAddr.toString();
+}
+
+async function CreateWidget() {
+  const widget = new ListWidget()
+  let image = Image.fromFile(getVehicleImageFilePath());
+  image.imageSize = new Size(15,15);
+  
+  //set gradient background
+	let endColorDark = new Color("#141414");
+	let startColorDark = new Color("#13235F");
+	let endColorLight = new Color("#DDDDDD");
+	let startColorLight = new Color("#BCBBBB")
+	let gradient = new LinearGradient();
+  let total = 100;
+  let havegone = 50;
+	gradient.colors = [startColorDark, endColorDark];
+	gradient.locations = [0.0, 1];
+  widget.backgroundGradient = gradient;
+  const main = addCenteredStack(widget);
+	main.layoutVertically();
+  
+	const s1 = addCenteredStack(main);
+	s1.layoutHorizontally();
+	const s2 = addCenteredStack(main);
+	s2.layoutVertically();
+  const s3 = addCenteredStack(main);
+	s3.layoutHorizontally();
+	const s4 = addCenteredStack(main);
+	s4.layoutVertically();
+  const s5 = addCenteredStack5(main);
+  s5.layoutHorizontally();
+
+	const s1g1 = s1.addStack();
+	s1g1.layoutVertically();
+	const s1g2 = s1.addStack();
+	s1g2.layoutVertically();
+
+	const s3g1 = addCenteredStack(s3);
+	s3g1.layoutVertically();
+	const s3g2 = addCenteredStack(s3);
+	s3g2.layoutVertically();
+	const s3g3 = addCenteredStack(s3);
+	s3g3.layoutVertically();
+
+	let s1c1r1 = s1g1.addStack();
+	s1c1r1.layoutHorizontally();
+	let s1c1r2 = s1g1.addStack();
+	s1c1r2.layoutHorizontally();
+	let s1c1r3 = s1g1.addStack();
+	s1c1r3.layoutHorizontally();
+
+  s1g2.addImage(image);
+
+	let s2c1r1 = s2.addStack();
+	let s2c1r2 = s2.addStack();
+
+	let s3c1r1 = addCenteredStacks3(s3g1);
+	let s3c1r2 = addCenteredStacks3(s3g1);
+  //s3g1.addSpacer(SPACING);
+	let s3c1r4 = addCenteredStacks3(s3g1);
+	let s3c1r5 = addCenteredStacks3(s3g1);	
+
+  //s3g2.addSpacer(SPACING+6);
+  let s3c2r1 = addCenteredStacks3(s3g2);
+	let s3c2r2 = addCenteredStacks3(s3g2);
+	let s3c2r3 = addCenteredStacks3(s3g2);
+	s3c2r3.layoutHorizontally();
+	let s3c2r4 = addCenteredStacks3(s3g2);
+	s3c2r4.layoutHorizontally();	
+
+	let s3c3r1 = addCenteredStacks3(s3g3);
+	let s3c3r2 = addCenteredStacks3(s3g3);
+  //s3g3.addSpacer(SPACING);
+	let s3c3r4 = addCenteredStacks3(s3g3);
+	let s3c3r5 = addCenteredStacks3(s3g3);
+   //s4.addSpacer(SPACING+SPACING);
+	let s4c1r1 = s4.addStack();
+  s4c1r1.layoutHorizontally();
+	let s4c1r2 = s4.addStack();
+  //s4.addSpacer(SPACING+SPACING);
+		
+
+	let s1c1r1t = s1c1r1.addText("Mandi's Car");
+	s1c1r1t.font = hdrFont;
+	s1c1r1t.textColor = textWhite;
+
+	let s1c1r2t1 = addSymbol(s1c1r2, 'minus.plus.batteryblock');
+	let s1c1r2t2 = addCenterSmallTitle(s1c1r2, 'Battery:');
+	let s1c1r2t3 = addCenterSmallDesc(s1c1r2, battery);
+s1c1r2t3.rightAlignText(); 
+  
+	let s1c1r3t1 = addSymbol(s1c1r3, 'oilcan.fill');
+	let s1c1r3t2 = addCenterSmallTitle(s1c1r3, 'Oil Life:');
+	let s1c1r3t3 = addCenterSmallDesc(s1c1r3, oilLife);
+  	s1c1r3t3.rightAlignText();
+  //s1c1r2.addSpacer(SPACING+SPACING);
+  s2c1r1.addSpacer();
+  let s2c1r1i = addSymbol(s2c1r1, 'fuelpump');
+	let s2c1r1t = addTitleText(s2c1r1, ' ' + fuelLevel);
+  s2c1r1.addSpacer();
+  s2c1r2.addSpacer();
+  let s2c1r2t = addCenterDescText(s2c1r2, fuelRange);
+  s2c1r2.addSpacer();
+  //s2.addSpacer(SPACING);
+	let s3c1r1t1 = addSymbol(s3c1r1, 'key.fill');
+	let s3c1r1t2 = addCenterSmallTitle(s3c1r1, 'Locks');
+	let s3c1r2t = addCenterDescText(s3c1r2, doorLock);
+  	
+	let s3c1r4t1 = addSymbol(s3c1r4, 'suv.side.arrowtriangle.up.fill');
+	let s3c1r4t2 = addCenterSmallTitle(s3c1r4, 'Doors');
+	let s3c1r5t = addCenterDescText(s3c1r5, door1stat);
+  
+  //let s3c2r1t = s3c2r1.addText(' ');
+  let s3c2r3i1 = s3c2r2.addText(' ');
+  let s3c2r3i = addSymbol(s3c2r2, 'tirepressure');
+	let s3c2r2t1 = addCenterSmallTitle(s3c2r2, 'Tires');
+	let s3c2r3t1 = addCenterDescText(s3c2r3, tire_flp + ' | ' + tire_frp);
+	let s3c2r4t1 = addCenterDescText(s3c2r4, tire_rlp + ' | ' + tire_rrp);
+
+	let s3c3r1t1 = addSymbol(s3c3r1, 'key.horizontal.fill');
+	let s3c3r1t2 = addCenterSmallTitle(s3c3r1, 'Ignition');
+  //s3c3r2.addSpacer(SPACING);
+	let s3c3r2t = addCenterDescText(s3c3r2, isRunning);
+
+	//let s3c3r4t1 = addSymbol(s3c3r4, 'arrowtriangle.up.arrowtriangle.down.window.left');
+  let s3c3r4t1 = addSymbol(s3c3r4, 'gauge.with.dots.needle.bottom.50percent');
+	let s3c3r4t2 = addCenterSmallTitle(s3c3r4, 'Odometer');
+	let s3c3r5t = addCenterDescText(s3c3r5, odometer);
+  
+  
+  s4c1r1.addSpacer();
+  let s4c1r1i = addSymbol(s4c1r1, 'map');
+	let s4c1r1t = addTitleText(s4c1r1, ' Location');
+  s4c1r1.addSpacer();
+  s4c1r2.addSpacer();
+	let s4c1r2t = addDescText(s4c1r2, vAddress);
+  s4c1r2.addSpacer();
+	
+  let s5c1 = addCenteredStack(s5);
+  s5c1.layoutVertically();
+	let s5c2 = addCenteredStack(s5);
+  s5c2.layoutVertically();
+	let s5c3 = addCenteredStack(s5);
+  s5c3.layoutVertically();
+	let s5c4 = addCenteredStack(s5);
+  s5c4.layoutVertically();
+  let s5c1r1 = addCenteredStack5(s5c1);
+  let s5c1r2 = addCenteredStack5(s5c1);
+  let s5c2r1 = addCenteredStack5(s5c2);
+  let s5c2r2 = addCenteredStack5(s5c2);
+  let s5c3r1 = addCenteredStack5(s5c3);
+  let s5c3r2 = addCenteredStack5(s5c3);
+  let s5c4r1 = addCenteredStack5(s5c4);
+  let s5c4r2 = addCenteredStack5(s5c4);
+	let s5c1r1t = addLargeSymbol(s5c1r1, 'suv.side.lock');
+  let s5c1r2t = addTinyText(s5c1r2, 'Lock');
+	let s5c2r1t = addLargeSymbol(s5c2r1, 'suv.side.lock.open');
+  let s5c2r2t = addTinyText(s5c2r2, 'Unlock');
+	let s5c3r1t = addLargeSymbol(s5c3r1, 'suv.side.and.exclamationmark.fill');
+  let s5c3r2t = addTinyText(s5c3r2, 'Start');
+	let s5c4r1t = addLargeSymbol(s5c4r1, 'suv.side.and.exclamationmark');
+  let s5c4r2t = addTinyText(s5c4r2, 'Stop');
+  s5c1r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Lock%20My%20Car';
+  s5c2r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Unlock%20My%20Car';
+  s5c3r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Start%20My%20Car';
+  s5c4r1.url = 'shortcuts://x-callback-url/run-shortcut?name=Stop%20My%20Car';
+  widget.addSpacer();
+  console.log(config.runsInApp)
+  console.log(config.runsInWidget)
+  if (config.runsInApp)
+  	return widget.presentLarge()
+  else if (config.runsInWidget)
+  	return widget
+  
+}
+
+function createProgress(total,havegone){
+  const width = 125
+  const h = 5
+	const context = new DrawContext()
+	context.size = new Size(width, h)
+	context.opaque=false
+	context.respectScreenScale=true
+	context.setFillColor(new Color("#48484b"))
+	const path = new Path()
+	path.addRoundedRect(new Rect(0, 0, width, h), 3, 2)
+	context.addPath(path)
+	context.fillPath()
+	context.setFillColor(new Color("#ffd60a"))
+	const path1 = new Path()
+	path1.addRoundedRect(new Rect(0, 0, width*havegone/total, h), 3, 2)
+	context.addPath(path1)
+	context.fillPath()
+	return context.getImage()
+}
+
+function borderize(stack) {
+  stack.borderColor = Color.cyan()
+  stack.borderWidth = 1
+  return stack;
+}
+
+function addFlexText(root, text) {
+  const s = root.addStack();
+  s.addSpacer();
+  const t = s.addText(text);
+  t.font = Font.regularSystemFont(10);
+  t.centerAlignText();
+  return t
+}
+
+function addTinyText(root, text) {
+  //const s = root.addStack();
+  root.layoutHorizontally();
+  root.addSpacer();
+  const t = root.addText(text);
+  t.font = Font.mediumRoundedSystemFont(10);
+  t.textColor = textWhite;
+  root.addSpacer();
+  return t
+}
+
+function addCenterDescText(root, text) {
+  //const s = root.addStack();
+  //s.layoutHorizontally();
+  root.addSpacer();
+  const t = root.addText(text);
+  t.font = Font.mediumRoundedSystemFont(14);
+  t.textColor = textWhite;
+  root.addSpacer();
+  return t
+}
+
+function addCenterTitleText(root, text) {
+  const s = root.addStack();
+  s.layoutHorizontally();
+  root.addSpacer();
+  const t = root.addText(text);
+  t.font = Font.boldRoundedSystemFont(14);
+  t.textColor = textWhite;
+  root.addSpacer();
+  return t
+}
+
+	function addCenterSmallTitle(root, text) {
+    root.addSpacer(1);
+  const t = root.addText(' ' + text);
+  t.font = Font.boldRoundedSystemFont(14);
+  t.textColor = textWhite;
+  root.addSpacer();
+  return t
+  }
+  
+  function addCenterSmallDesc(root, text) {
+    root.addSpacer(1);
+  const t = root.addText(text);
+  t.font = Font.mediumRoundedSystemFont(14);
+  t.textColor = textWhite;
+  root.addSpacer();
+  return t
+  }
+
+function addCenteredStack(root) {
+  const ver = root.addStack()
+  ver.layoutVertically()
+  //ver.addSpacer()
+  const hor = ver.addStack()
+  hor.addSpacer()
+  const result = hor.addStack();
+  hor.addSpacer()
+  //ver.addSpacer()
+  return hor;
+}
+
+function addCenteredStack5(root) {
+  const ver = root.addStack()
+  ver.layoutVertically()
+  //ver.addSpacer()
+  const hor = ver.addStack()
+  hor.addSpacer()
+  const result = hor.addStack();
+  hor.addSpacer()
+  //ver.addSpacer()
+  return result;
+}
+
+function addCenteredStacks3(root) {
+  const ver = root.addStack()
+  ver.layoutVertically()
+  //ver.addSpacer()
+  const hor = ver.addStack()
+  hor.addSpacer(1)
+  const result = hor.addStack();
+  hor.addSpacer(1)
+  ver.addSpacer(1)
+  return result;
+}
+
+function flexStack(wrapper, title, desc) {
+  const rootBox = borderize(wrapper.addStack())
+  rootBox.backgroundColor = Color.red()
+  rootBox.layoutVertically();
+  const cen = addCenteredStack(rootBox);
+  const titleStackRoot = borderize(rootBox.addStack())
+  titleStackRoot.addSpacer();
+  const titleStack = titleStackRoot.addStack();
+  titleStack.layoutVertically()
+  
+  const t1 = addCenterText(titleStack, desc)
+  
+  return {
+    main: cen,
+    title1: t1,
+  };
+}
+
